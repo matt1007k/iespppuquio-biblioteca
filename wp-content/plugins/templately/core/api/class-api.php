@@ -75,6 +75,9 @@ class API {
             case 'get_dependencies' :
                 $data = $this->get_dependencies();
                 break;
+            case 'get_templates' :
+                $data = $this->get_templates();
+                break;
             case 'blocks' :
                 $data = $this->get_items();
                 break;
@@ -536,6 +539,8 @@ class API {
         $cloud_item = json_decode( $response['data']['pushToMyCloud']['data'] );
         if( isset( $cloud_item->myCloud_item ) ) {
             $cloud_map = DB::get_option('_templately_cloud_map', []);
+            $id = $args['id'];
+
             if( ! isset( $cloud_map[ $id ] ) ) {
                 $cloud_map[] = array(
                     'template_id' => $id,
@@ -565,6 +570,7 @@ class API {
             $data = Query::getFromLibrary( $id );
             if( ! empty( $data ) && isset( $data['content'] ) && ! empty( $data['content'] ) ) {
                 $name = \get_the_title( $id );
+                $args['id'] = $id;
                 return $this->cloud_push( $name, $data, $item_type, $args );
             }
         }
@@ -1198,8 +1204,8 @@ class API {
         if( $unfav && isset( $response['data']['unFavourite'] ) && $response['data']['unFavourite'] ) {
             $user_data = DB::get_option('_templately_connect_data', []);
             if( $unfav && isset( $user_data['favourites'][ $type ] ) && is_array( $user_data['favourites'][ $type ] ) ) {
-                $favourites = array_filter( $user_data['favourites'][ $type ], function( $value ) {
-                    return $value == $id;
+                $favourites = array_filter( $user_data['favourites'][ $type ], function( $value ) use($id) {
+                    return $value != $id;
                 } );
                 $user_data['favourites'][ $type ] = array_values( $favourites );
                 DB::update_option( '_templately_connect_data', $user_data );
@@ -1273,40 +1279,42 @@ class API {
         Helper::send_error( __( 'Something went wrong regarding create WorkSpace. Try again or contact with Templately Support.', 'templately' ) );
     }
 
-    protected function edit_workspace(){
-        $api_key = DB::get_option('_templately_api_key', false);
-        if( empty( $api_key ) ) {
-            Helper::send_error( __( 'You need to re-logged in.', 'templately' ) );
-        }
-        $id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : false;
-        if( $id === false ) {
-            Helper::send_error( __( 'Workspace not found.', 'templately' ) );
-        }
+    // protected function edit_workspace(){
+    //     $api_key = DB::get_option('_templately_api_key', false);
+    //     if( empty( $api_key ) ) {
+    //         Helper::send_error( __( 'You need to re-logged in.', 'templately' ) );
+    //     }
+    //     $id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : false;
+    //     if( $id === false ) {
+    //         Helper::send_error( __( 'Workspace not found.', 'templately' ) );
+    //     }
 
-        $name = ( isset( $_POST['name'] ) && ! empty( $_POST['name'] ) ) ? trim( $_POST['name'] ) : '';
-        $share_with = ( isset( $_POST['share_with'] ) && ! empty( $_POST['share_with'] ) ) ? trim( $_POST['share_with'] ) : '';
-        $remove = ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) ? trim( $_POST['remove'] ) : '';
+    //     $name = ( isset( $_POST['name'] ) && ! empty( $_POST['name'] ) ) ? trim( $_POST['name'] ) : '';
+    //     $share_with = ( isset( $_POST['share_with'] ) && ! empty( $_POST['share_with'] ) ) ? trim( $_POST['share_with'] ) : '';
+    //     $remove = ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) ? trim( $_POST['remove'] ) : '';
+    //     $platform = ( isset( $_POST['platform'] ) && ! empty( $_POST['platform'] ) ) ? trim( $_POST['platform'] ) : 'elementor';
 
-        $query = sprintf(
-            'mutation { editWorkspace ( id: %s, api_key: "%s", name: "%s", share_with: "%s", remove: "%s" ){ status } }',
-            $id,
-            $api_key,
-            $name,
-            $share_with,
-            $remove
-        );
-        $response = Query::get( $query );
-        if( is_wp_error( $response ) ) {
-            Helper::send_error( $response->get_error_code() . ': ' . $response->get_error_message() );
-        }
+    //     $query = sprintf(
+    //         'mutation { editWorkspace ( id: %s, api_key: "%s", name: "%s", share_with: "%s", remove: "%s", file_type: "%s" ){ status } }',
+    //         $id,
+    //         $api_key,
+    //         $name,
+    //         $share_with,
+    //         $remove,
+    //         $platform
+    //     );
+    //     $response = Query::get( $query );
+    //     if( is_wp_error( $response ) ) {
+    //         Helper::send_error( $response->get_error_code() . ': ' . $response->get_error_message() );
+    //     }
 
-        if( isset( $response['data'], $response['data']['editWorkspace'], $response['data']['editWorkspace']['data'] ) ) {
-            return \json_decode( $response['data']['editWorkspace']['data'] );
-        }
+    //     if( isset( $response['data'], $response['data']['editWorkspace'], $response['data']['editWorkspace']['data'] ) ) {
+    //         return \json_decode( $response['data']['editWorkspace']['data'] );
+    //     }
 
 
-        Helper::send_error( __( 'Something went wrong regarding edit WorkSpace. Try again or contact with Templately Support.', 'templately' ) );
-    }
+    //     Helper::send_error( __( 'Something went wrong regarding edit WorkSpace. Try again or contact with Templately Support.', 'templately' ) );
+    // }
 
     protected function create_or_edit_workspace( $edit = false ){
         $api_key = DB::get_option('_templately_api_key', false);
@@ -1329,14 +1337,16 @@ class API {
         if( $edit ) {
             $action = 'edit';
             $id = isset( $_POST['id'] ) ? intval( $_POST['id'] ) : false;
+            $platform = ( isset( $_POST['platform'] ) && ! empty( $_POST['platform'] ) ) ? trim( $_POST['platform'] ) : 'elementor';
             if( $id === false ) {
                 Helper::send_error( __( 'Workspace not found.', 'templately' ) );
             }
             $remove = ( isset( $_POST['remove'] ) && ! empty( $_POST['remove'] ) ) ? trim( $_POST['remove'] ) : '';
             $query = sprintf(
-                'mutation { editWorkspace ( api_key: "%s", name: "%s", id: %s %s %s ){ status, workspace{ id, name, slug, sharedWith{ id, name, profile_photo }, files{ data{ id, my_cloud_id, name, file_type, owner{ id, name, profile_photo }, created_at, last_modified }, current_page, total_page }, owner{ id, name, profile_photo }, pending_invitations } } }',
+                'mutation { editWorkspace ( api_key: "%s", name: "%s", file_type: "%s", id: %s %s %s ){ status, workspace{ id, name, slug, sharedWith{ id, name, profile_photo }, files{ data{ id, my_cloud_id, name, file_type, owner{ id, name, profile_photo }, created_at, last_modified }, current_page, total_page }, owner{ id, name, profile_photo }, pending_invitations } } }',
                 $api_key,
                 $title,
+                $platform,
                 $id,
                 ! empty( $share_with ) ? 'share_with: "'. \wp_slash( \json_encode( \explode(',', $share_with ) ) ) .'"' : '',
                 ! empty( $remove ) ? ', remove: "'. $remove .'"' : ''
@@ -1497,5 +1507,11 @@ class API {
             return $response['data']['addFileToWorkspace'];
         }
         Helper::send_error( __( "Something went wrong regarding adding files to your Workspace. Try again or contact with Templately Support.", 'templately' ) );
+    }
+
+    public function get_templates(){
+        return Elementor::templates( false, [
+            'page' => ( isset( $_POST['page'] ) ? intval( $_POST['page'] ) : 1 )
+        ] );
     }
 }

@@ -4,7 +4,7 @@ Donate link: https://templately.com
 Tags: templates, elementor, template-cloud, template, clouds, elementor templates, gutenberg, gutenberg templates, wordpress cloud, cloud backup
 Requires at least: 4.0
 Tested up to: 5.5
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -12,7 +12,7 @@ Ultimate Templates Cloud for WordPress
 
 == Description ==
 
-# Ultimate Templates Cloud for WordPress # 
+## Ultimate Templates Cloud for WordPress - Elementor & Gutenberg Supported ##
 
 Take your favourite Page Builders to a whole new level & manage all your designs in one place with [Templately](https://templately.com)
 
@@ -47,9 +47,9 @@ Create conversion optimized landing pages for every niche using the Templately P
 🙌 After reading this feature list, you can probably imagine Templately can change the way you used to create websites and save plenty of time. So, do you want to unlock the advanced features? Upgrade to our Pro version.
 
 
-## 🚀 BACKED BY A TRUSTED TEAM ## 
+## 🚀 BACKED BY A TRUSTED TEAM ##
 
-This Templates Cloud is brought to you by the team behind [WPDeveloper](https://wpdeveloper.net), a dedicated marketplace for WordPress, trusted by 500,000+ happy users.
+This Templates Cloud is brought to you by the team behind [WPDeveloper](https://wpdeveloper.net), a dedicated marketplace for WordPress, trusted by over 2,500,000+ happy users.
 
 ## 👨‍💻 DOCUMENTATION AND SUPPORT ##
 
@@ -66,10 +66,13 @@ This Templates Cloud is brought to you by the team behind [WPDeveloper](https://
 
 If you like Templately, then consider checking out our other WordPress Plugins:
 
-- 🔝 [Essential Addons For Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/) – Most popular Elementor extensions with 400,000+ active users in the WordPress repository.
+- 🔝 [Essential Addons For Elementor](https://wordpress.org/plugins/essential-addons-for-elementor-lite/) – Most popular Elementor extensions with 800,000+ active users in the WordPress repository.
 - 🔔 [NotificationX](https://notificationx.com/) – Best Social Proof & FOMO Marketing Solution to increase conversion rates.
 - ⏰ [WP Scheduled Posts](https://wordpress.org/plugins/wp-scheduled-posts/) – Complete solution for WordPress Post Scheduling to manage schedules through an editorial calendar.
-
+- 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors. 
+- 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
+- ⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video and more.
+- ⚡ [Flexia](http://wordpress.org/plugins/flexia): Most lightweight, customizable & multi purpose theme for WordPress.
 
 Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.net/blog).
 
@@ -77,7 +80,7 @@ Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do bett
 
 = Modern Way: =
 1. Go to the WordPress Dashboard "Add New Plugin" section.
-2. Search For "Templately". 
+2. Search For "Templately".
 3. Install, then Activate it.
 4. Follow the [Documentation](https://docs.templately.com/)
 
@@ -103,6 +106,15 @@ Yes, it will work with any standard WordPress theme.
 5. MyCloud saved items
 
 == Changelog ==
+
+= 1.1.3 - 27-10-2020 =
+
+- Fixed: No Items Found error inside Workspace
+- Fixed: Template Insertion placement issue inside Elementor Editor
+- Fixed: Workspace not showing initially inside WordPress Dashboard
+- Added: Pagination option for Templates Overview inside WordPress Dashboard
+- Improved: Overall UI/UX with Revamped Designs
+- Few minor bug fix & improvements
 
 = 1.1.2 - 06-08-2020 =
 

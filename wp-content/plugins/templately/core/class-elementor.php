@@ -97,7 +97,7 @@ class Elementor {
             'not_found' => \TEMPLATELY_ASSETS . 'images/no-item-found.png',
             'no_items' => \TEMPLATELY_ASSETS . 'images/no-items.png',
             'loadingImage' => \TEMPLATELY_ASSETS . 'images/loading-logo.gif',
-            'templates' => $this->templates(),
+            'templates' => self::templates(),
             'reusable_blocks' => $this->reusable_blocks(),
             'is_logged_in' => DB::get_option('_templately_connected', false),
             'cloud_map' => DB::get_option('_templately_cloud_map', []),
@@ -167,15 +167,22 @@ class Elementor {
      * Get all saved templates from elementor library
      * @return void
      */
-    public function templates(){
-        $templates = new \WP_Query(array(
+    public static function templates( $initial = true, $params = []  ){
+        $args = array(
             'post_type' => 'elementor_library',
-            'posts_per_page' => -1
-        ));
+            'numberposts' => 10,
+            'paged' => 1,
+        );
+        if ( ! $initial ) {
+            $args[ 'paged' ] = isset( $params['page'] ) ? $params['page'] : 1;
+        }
+        $templates = new \WP_Query( $args );
+        $templates_list = $templates->posts;
         $templateList = array();
-        if( $templates->have_posts() ) :
+
+        if( count( $templates_list ) > 0 ) :
             $date_format = get_option( 'date_format', 'F j, Y' );
-            foreach( $templates->posts as $post ) {
+            foreach( $templates_list as $post ) {
                 $templateList[] = array(
                     'id' => $post->ID,
                     'title' => $post->post_title,
@@ -183,13 +190,17 @@ class Elementor {
                     'type' => ucwords( \get_post_meta( $post->ID, '_elementor_template_type', true ) ),
                     'created_by' => \get_the_author_meta( 'user_nicename', $post->post_author ),
                     'preview_url' => \get_permalink( $post->ID ),
-                    'export_url' => $this->get_export_link( $post->ID ),
+                    'export_url' => self::get_export_link( $post->ID ),
                 );
             }
         endif;
         wp_reset_postdata();
         wp_reset_query();
-        return $templateList;
+        return array(
+            'current_page' => $templates->query_vars['paged'],
+            'total_page' => $templates->max_num_pages,
+            'items' => $templateList,
+        );
     }
     /**
      * Get all saved templates from elementor library
@@ -224,7 +235,7 @@ class Elementor {
      * @param template id $template_id
      * @return void
      */
-	private function get_export_link( $template_id ) {
+	private static function get_export_link( $template_id ) {
 		return \add_query_arg(
 			[
 				'action' => 'elementor_library_direct_actions',

@@ -6,14 +6,13 @@ Tags: embed, embed youtube, gutenberg embed, pdf, doc, docs, ppt, elementor embe
 Requires at least: 4.6
 Tested up to: 5.5
 Requires PHP: 5.6
-Stable tag: 2.6.1
+Stable tag: 2.6.2
 License: GPLv3 or later
 License URI: https://opensource.org/licenses/GPL-3.0
 
 EmbedPress lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors. 
 
 == Description ==
-
 
 [EmbedPress](https://embedpress.com/) lets you embed videos, images, posts, audio, maps and upload PDF, DOC, PPT & all other types of content into your WordPress site with one-click and showcase it beautifully for the visitors. Classic Editor, Gutenberg & Elementor all supported.
 
@@ -249,7 +248,7 @@ If you like EmbedPress, then consider checking out our other WordPress Plugins:
 
 ⏰[WP Scheduled Posts](https://wordpress.org/plugins/wp-scheduled-posts/)  – Complete solution for WordPress Post Scheduling to manage schedules through an editorial calendar & Social Share.
 
-🗒️ [BetterDocs](https://betterdocs.co/) – Best Documentation & Knowledge Base Plugin for WordPress, whcih also reduce your manual support request.
+🗒️[BetterDocs](https://betterdocs.co/) – Best Documentation & Knowledge Base Plugin for WordPress, whcih also reduce your manual support request.
 
 
 Visit [WPDeveloper](https://wpdeveloper.net/) to learn more about how to do better in WordPress with [Help Tutorial, Tips & Tricks](https://wpdeveloper.net/blog).
@@ -294,6 +293,13 @@ Not at all. You can set up everything your team needs without any coding knowled
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
+
+= [2.6.2] - 2020-10-28 =
+* Fixed: Facebook & Instagram Embedding issue 
+* Fixed: PHP error on WordPress 4.9.8
+* Fixed: Additional stylesheets loaded in frontend
+* Fixed: Conflict with WordPress 5.5.1
+* Few minor bug fix & improvements
 
 = [2.6.1] - 2020-09-14 =
 * Twitch Issue Fixed
